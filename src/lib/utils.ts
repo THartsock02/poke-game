@@ -18,7 +18,7 @@ export async function getSixRandomPokemon() {
 
   for (let i = 0; i < 6; i++) {
     const randomPokemanId = await getRandomPokemonId();
-
+    console.log("random id: " + randomPokemanId);
     const randomPokemon = await api
       .getPokemonById(randomPokemanId)
       .catch(() => console.log("Oops!"));
