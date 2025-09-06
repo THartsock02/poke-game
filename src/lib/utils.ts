@@ -15,7 +15,10 @@ export async function getRandomPokemonId() {
 }
 
 export async function getSixRandomPokemon() {
-  const api = new PokemonClient({ cacheOptions: { ttl: 60 }, logs: true });
+  const api = new PokemonClient({
+    cacheOptions: { ttl: 60, interpretHeader: true, etag: true },
+    logs: true,
+  });
   const pokemon: Pokemon[] = [];
 
   for (let i = 0; i < 6; i++) {
