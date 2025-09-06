@@ -16,7 +16,8 @@ export default async function Home() {
   const randomPokemanId = await getRandomPokemonId();
   console.log("random id: " + randomPokemanId);
   const pokemon = await fetch(
-    "https://pokeapi.co/api/v2/pokemon/" + randomPokemanId
+    "https://pokeapi.co/api/v2/pokemon/" + randomPokemanId,
+    { cache: "no-store" }
   ).then((res) => res.json());
   console.log(pokemon.name);
   return (
