@@ -3,7 +3,6 @@
 import { findStatValueByName, getRandomPokemonId } from "@/lib/utils";
 import React, { useEffect } from "react";
 import Image from "next/image";
-import EndGameModal from "./EndGameModal";
 
 export default function TestPage() {
   const [counter, setCounter] = React.useState(0);
@@ -15,6 +14,17 @@ export default function TestPage() {
   const [selectedSpecialAttack, setSelectedSpecialAttack] = React.useState(0);
   const [selectedSpecialDefense, setSelectedSpecialDefense] = React.useState(0);
   const [selectedSpeed, setSelectedSpeed] = React.useState(0);
+
+  const [selectedHPName, setSelectedHPName] = React.useState<string>();
+  const [selectedAttackName, setSelectedAttackName] = React.useState<string>();
+  const [selectedDefenseName, setSelectedDefenseName] =
+    React.useState<string>();
+  const [selectedSpecialAttackName, setSelectedSpecialAttackName] =
+    React.useState<string>();
+  const [selectedSpecialDefenseName, setSelectedSpecialDefenseName] =
+    React.useState<string>();
+  const [selectedSpeedName, setSelectedSpeedName] = React.useState<string>();
+
   const [showRestartButton, setShowRestartButton] = React.useState(false);
 
   const [currentPokemon, setCurrentPokemon] = React.useState<Pokemon>();
@@ -63,6 +73,12 @@ export default function TestPage() {
     setSelectedSpecialAttack(0);
     setSelectedSpecialDefense(0);
     setSelectedSpeed(0);
+    setSelectedHPName(undefined);
+    setSelectedAttackName(undefined);
+    setSelectedDefenseName(undefined);
+    setSelectedSpecialAttackName(undefined);
+    setSelectedSpecialDefenseName(undefined);
+    setSelectedSpeedName(undefined);
     setCurrentPokemon(undefined);
   }
 
@@ -74,21 +90,27 @@ export default function TestPage() {
         switch (statName) {
           case "hp":
             setSelectedHP(baseStat);
+            setSelectedHPName(currentPokemon.name);
             break;
           case "attack":
             setSelectedAttack(baseStat);
+            setSelectedAttackName(currentPokemon.name);
             break;
           case "special-attack":
             setSelectedSpecialAttack(baseStat);
+            setSelectedSpecialAttackName(currentPokemon.name);
             break;
           case "special-defense":
             setSelectedSpecialDefense(baseStat);
+            setSelectedSpecialDefenseName(currentPokemon.name);
             break;
           case "defense":
             setSelectedDefense(baseStat);
+            setSelectedDefenseName(currentPokemon.name);
             break;
           case "speed":
             setSelectedSpeed(baseStat);
+            setSelectedSpeedName(currentPokemon.name);
             break;
 
           default:
@@ -172,6 +194,9 @@ export default function TestPage() {
                   CHOOSE
                 </button>
               )}
+              {selectedHPName && (
+                <button disabled={true}>({selectedHPName})</button>
+              )}
             </li>
             <li key={"attack"}>
               Attack: {selectedAttack}
@@ -183,6 +208,9 @@ export default function TestPage() {
                 >
                   CHOOSE
                 </button>
+              )}
+              {selectedAttackName && (
+                <button disabled={true}>({selectedAttackName})</button>
               )}
             </li>
             <li key={"defense"}>
@@ -196,6 +224,9 @@ export default function TestPage() {
                   CHOOSE
                 </button>
               )}
+              {selectedDefenseName && (
+                <button disabled={true}>({selectedDefenseName})</button>
+              )}
             </li>
             <li key={"special-attack"}>
               Special Attack: {selectedSpecialAttack}
@@ -207,6 +238,9 @@ export default function TestPage() {
                 >
                   CHOOSE
                 </button>
+              )}
+              {selectedSpecialAttackName && (
+                <button disabled={true}>({selectedSpecialAttackName})</button>
               )}
             </li>
             <li key={"special-defense"}>
@@ -220,6 +254,9 @@ export default function TestPage() {
                   CHOOSE
                 </button>
               )}
+              {selectedSpecialDefenseName && (
+                <button disabled={true}>({selectedSpecialDefenseName})</button>
+              )}
             </li>
             <li key={"speed"}>
               Speed: {selectedSpeed}
@@ -231,6 +268,9 @@ export default function TestPage() {
                 >
                   CHOOSE
                 </button>
+              )}
+              {selectedSpeedName && (
+                <button disabled={true}>({selectedSpeedName})</button>
               )}
             </li>
           </ul>
