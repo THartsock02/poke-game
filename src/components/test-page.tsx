@@ -7,7 +7,7 @@ import EndGameModal from "./EndGameModal";
 
 export default function TestPage() {
   const [counter, setCounter] = React.useState(0);
-  const [pokemonIndex, setPokemonIndex] = React.useState(1);
+  const [pokemonIndex, setPokemonIndex] = React.useState(0);
 
   const [selectedHP, setSelectedHP] = React.useState(0);
   const [selectedAttack, setSelectedAttack] = React.useState(0);
@@ -15,7 +15,7 @@ export default function TestPage() {
   const [selectedSpecialAttack, setSelectedSpecialAttack] = React.useState(0);
   const [selectedSpecialDefense, setSelectedSpecialDefense] = React.useState(0);
   const [selectedSpeed, setSelectedSpeed] = React.useState(0);
-  const [showEndModal, setShowEndModal] = React.useState(false);
+  const [showRestartButton, setShowRestartButton] = React.useState(false);
 
   const [currentPokemon, setCurrentPokemon] = React.useState<Pokemon>();
 
@@ -33,7 +33,7 @@ export default function TestPage() {
     return (await response.json()) as Pokemon;
   }
 
-  async function nextClicked() {
+  async function nextPokemn() {
     setPokemonIndex(pokemonIndex + 1);
 
     console.log("NEXT CLICKED");
@@ -44,8 +44,23 @@ export default function TestPage() {
   }
 
   async function startClicked() {
+    setPokemonIndex(1);
+    setCounter(0);
     const pokemon = await getRandomPokemn();
     if (pokemon) setCurrentPokemon(pokemon);
+  }
+
+  async function restartClicked() {
+    setShowRestartButton(false);
+    setPokemonIndex(0);
+    setCounter(0);
+    setSelectedHP(0);
+    setSelectedAttack(0);
+    setSelectedDefense(0);
+    setSelectedSpecialAttack(0);
+    setSelectedSpecialDefense(0);
+    setSelectedSpeed(0);
+    setCurrentPokemon(undefined);
   }
 
   async function handleClick(statName: string) {
@@ -76,6 +91,7 @@ export default function TestPage() {
           default:
             break;
         }
+        nextPokemn();
       }
     }
   }
@@ -97,7 +113,7 @@ export default function TestPage() {
       selectedSpeed > 0
     ) {
       console.log("End of game");
-      setShowEndModal(true);
+      setShowRestartButton(true);
     }
   }, [
     selectedHP,
@@ -113,11 +129,20 @@ export default function TestPage() {
   }
   return (
     <div>
-      <button onClick={() => startClicked()}>START</button>
-      <button onClick={() => nextClicked()}>NEXT</button>
-
-      <h1>TURN: {pokemonIndex}</h1>
-      <h1>POINTS: {counter}</h1>
+      {pokemonIndex == 0 && (
+        <button onClick={() => startClicked()}>START</button>
+      )}
+      {pokemonIndex > 0 && pokemonIndex <= 6 && (
+        <div>
+          {/* <button onClick={() => nextClicked()}>NEXT</button> */}
+          <h1>TURN: {pokemonIndex}</h1>
+        </div>
+      )}
+      {pokemonIndex > 0 && (
+        <div>
+          <h1>POINTS: {counter}</h1>
+        </div>
+      )}
 
       {currentPokemon && (
         <>
@@ -130,67 +155,87 @@ export default function TestPage() {
           />
         </>
       )}
-
-      <ul>
-        <li key={"hp"}>
-          HP: {selectedHP}
-          {"\t\t"}
-          <button disabled={selectedHP > 0} onClick={() => handleClick("hp")}>
-            CHOOSE
-          </button>
-        </li>
-        <li key={"attack"}>
-          Attack: {selectedAttack}
-          {"\t\t"}
-          <button
-            disabled={selectedAttack > 0}
-            onClick={() => handleClick("attack")}
-          >
-            CHOOSE
-          </button>
-        </li>
-        <li key={"defense"}>
-          Defense: {selectedDefense}
-          {"\t\t"}
-          <button
-            disabled={selectedDefense > 0}
-            onClick={() => handleClick("defense")}
-          >
-            CHOOSE
-          </button>
-        </li>
-        <li key={"special-attack"}>
-          Special Attack: {selectedSpecialAttack}
-          {"\t\t"}
-          <button
-            disabled={selectedSpecialAttack > 0}
-            onClick={() => handleClick("special-attack")}
-          >
-            CHOOSE
-          </button>
-        </li>
-        <li key={"special-defense"}>
-          Special Defense: {selectedSpecialDefense}
-          {"\t\t"}
-          <button
-            disabled={selectedSpecialDefense > 0}
-            onClick={() => handleClick("special-defense")}
-          >
-            CHOOSE
-          </button>
-        </li>
-        <li key={"speed"}>
-          Speed: {selectedSpeed}
-          {"\t\t"}
-          <button
-            disabled={selectedSpeed > 0}
-            onClick={() => handleClick("speed")}
-          >
-            CHOOSE
-          </button>
-        </li>
-      </ul>
-      {<EndGameModal score={counter} />}
+      {currentPokemon && (
+        <div>
+          <ul>
+            <li key={"hp"}>
+              HP: {selectedHP}
+              {"\t\t"}
+              {selectedHP == 0 && (
+                <button
+                  disabled={selectedHP > 0}
+                  onClick={() => handleClick("hp")}
+                >
+                  CHOOSE
+                </button>
+              )}
+            </li>
+            <li key={"attack"}>
+              Attack: {selectedAttack}
+              {"\t\t"}
+              {selectedAttack == 0 && (
+                <button
+                  disabled={selectedAttack > 0}
+                  onClick={() => handleClick("attack")}
+                >
+                  CHOOSE
+                </button>
+              )}
+            </li>
+            <li key={"defense"}>
+              Defense: {selectedDefense}
+              {"\t\t"}
+              {selectedDefense == 0 && (
+                <button
+                  disabled={selectedDefense > 0}
+                  onClick={() => handleClick("defense")}
+                >
+                  CHOOSE
+                </button>
+              )}
+            </li>
+            <li key={"special-attack"}>
+              Special Attack: {selectedSpecialAttack}
+              {"\t\t"}
+              {selectedSpecialAttack == 0 && (
+                <button
+                  disabled={selectedSpecialAttack > 0}
+                  onClick={() => handleClick("special-attack")}
+                >
+                  CHOOSE
+                </button>
+              )}
+            </li>
+            <li key={"special-defense"}>
+              Special Defense: {selectedSpecialDefense}
+              {"\t\t"}
+              {selectedSpecialDefense == 0 && (
+                <button
+                  disabled={selectedSpecialDefense > 0}
+                  onClick={() => handleClick("special-defense")}
+                >
+                  CHOOSE
+                </button>
+              )}
+            </li>
+            <li key={"speed"}>
+              Speed: {selectedSpeed}
+              {"\t\t"}
+              {selectedSpeed == 0 && (
+                <button
+                  disabled={selectedSpeed > 0}
+                  onClick={() => handleClick("speed")}
+                >
+                  CHOOSE
+                </button>
+              )}
+            </li>
+          </ul>
+        </div>
+      )}
+      {showRestartButton && (
+        <button onClick={() => restartClicked()}>RESTART</button>
+      )}
     </div>
   );
 }
