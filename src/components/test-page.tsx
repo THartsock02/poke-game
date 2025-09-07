@@ -37,9 +37,12 @@ export default function TestPage() {
     setPokemonIndex(pokemonIndex + 1);
 
     console.log("NEXT CLICKED");
-    const pokemon = await getRandomPokemn();
-    if (pokemon) {
-      setCurrentPokemon(pokemon);
+    console.log(pokemonIndex);
+    if (pokemonIndex < 6) {
+      const pokemon = await getRandomPokemn();
+      if (pokemon) {
+        setCurrentPokemon(pokemon);
+      }
     }
   }
 
