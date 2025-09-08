@@ -9,6 +9,7 @@ import React from "react";
 
 import StatOption from "./stat-option";
 import {
+  AspectRatio,
   Button,
   Card,
   Center,
@@ -141,11 +142,17 @@ export default function TestPage() {
   return (
     <Center bg="var(--mantine-color-gray-light)">
       <Container strategy="grid" size={500}>
-        <Card shadow="sm" padding="lg" radius="md" withBorder>
+        <Card
+          shadow="sm"
+          padding="lg"
+          radius="md"
+          withBorder
+          style={{ width: "500px" }}
+        >
           <Card.Section withBorder inheritPadding py="xs">
             {cardHeader()}
           </Card.Section>
-          <Flex
+          {/* <Flex
             mih={50}
             gap="md"
             justify="center"
@@ -153,42 +160,44 @@ export default function TestPage() {
             direction="row"
             wrap="wrap"
           >
-            <div>
-              {currentPokemon && (
-                <>
-                  <Text fw={700} size="xl">
-                    {capitalize(currentPokemon.name)}
-                  </Text>
-                  <Image
-                    radius="md"
-                    src={currentPokemon.sprites.front_default!}
-                    h={200}
-                    w="auto"
-                    fallbackSrc="https://placehold.co/600x400?text=Placeholder"
-                  />
-                </>
-              )}
+            <div> */}
+          {currentPokemon && (
+            <>
+              <Text fw={700} size="xl">
+                {capitalize(currentPokemon.name)}
+              </Text>
+              <AspectRatio ratio={1080 / 720} maw={300} mx="auto">
+                <Image
+                  radius="md"
+                  src={currentPokemon.sprites.front_default!}
+                  h={200}
+                  w="auto"
+                  fallbackSrc="https://placehold.co/600x400?text=Placeholder"
+                />
+              </AspectRatio>
+            </>
+          )}
 
-              {currentPokemon && (
-                <>
-                  {stats.map((stat) => {
-                    return (
-                      <>
-                        <StatOption
-                          key={stat.key}
-                          statKey={stat.key}
-                          statLabel={stat.name}
-                          score={score}
-                          handleStat={handleClick}
-                        />
-                        <Space h="xs" />
-                      </>
-                    );
-                  })}
-                </>
-              )}
-            </div>
-          </Flex>
+          {currentPokemon && (
+            <>
+              {stats.map((stat) => {
+                return (
+                  <>
+                    <StatOption
+                      key={stat.key}
+                      statKey={stat.key}
+                      statLabel={stat.name}
+                      score={score}
+                      handleStat={handleClick}
+                    />
+                    <Space h="xs" />
+                  </>
+                );
+              })}
+            </>
+          )}
+          {/* </div>
+          </Flex> */}
           {showRestartButton && (
             <Button
               color="blue"
