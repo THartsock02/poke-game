@@ -12,6 +12,7 @@ import {
   Button,
   Card,
   Center,
+  Container,
   Flex,
   Group,
   Image,
@@ -139,65 +140,68 @@ export default function TestPage() {
   };
   return (
     <Center bg="var(--mantine-color-gray-light)">
-      <Card shadow="sm" padding="lg" radius="md" withBorder>
-        <Card.Section withBorder inheritPadding py="xs">
-          {cardHeader()}
-        </Card.Section>
-        <Flex
-          mih={50}
-          gap="md"
-          justify="center"
-          align="center"
-          direction="row"
-          wrap="wrap"
-        >
-          <div>
-            {currentPokemon && (
-              <>
-                <Text fw={700} size="xl">
-                  {capitalize(currentPokemon.name)}
-                </Text>
-                <Image
-                  radius="md"
-                  src={currentPokemon.sprites.front_default!}
-                  h={200}
-                  w="auto"
-                  fallbackSrc="https://placehold.co/600x400?text=Placeholder"
-                />
-              </>
-            )}
-
-            {currentPokemon && (
-              <>
-                {stats.map((stat) => {
-                  return (
-                    <>
-                      <StatOption
-                        statKey={stat.key}
-                        statLabel={stat.name}
-                        score={score}
-                        handleStat={handleClick}
-                      />
-                      <Space h="xs" />
-                    </>
-                  );
-                })}
-              </>
-            )}
-          </div>
-        </Flex>
-        {showRestartButton && (
-          <Button
-            color="blue"
-            fullWidth
-            mt="md"
-            radius="md"
-            onClick={() => restartClicked()}
+      <Container strategy="grid" size={500}>
+        <Card shadow="sm" padding="lg" radius="md" withBorder>
+          <Card.Section withBorder inheritPadding py="xs">
+            {cardHeader()}
+          </Card.Section>
+          <Flex
+            mih={50}
+            gap="md"
+            justify="center"
+            align="center"
+            direction="row"
+            wrap="wrap"
           >
-            RESTART
-          </Button>
-        )}
-      </Card>
+            <div>
+              {currentPokemon && (
+                <>
+                  <Text fw={700} size="xl">
+                    {capitalize(currentPokemon.name)}
+                  </Text>
+                  <Image
+                    radius="md"
+                    src={currentPokemon.sprites.front_default!}
+                    h={200}
+                    w="auto"
+                    fallbackSrc="https://placehold.co/600x400?text=Placeholder"
+                  />
+                </>
+              )}
+
+              {currentPokemon && (
+                <>
+                  {stats.map((stat) => {
+                    return (
+                      <>
+                        <StatOption
+                          key={stat.key}
+                          statKey={stat.key}
+                          statLabel={stat.name}
+                          score={score}
+                          handleStat={handleClick}
+                        />
+                        <Space h="xs" />
+                      </>
+                    );
+                  })}
+                </>
+              )}
+            </div>
+          </Flex>
+          {showRestartButton && (
+            <Button
+              color="blue"
+              fullWidth
+              mt="md"
+              radius="md"
+              onClick={() => restartClicked()}
+            >
+              RESTART
+            </Button>
+          )}
+        </Card>
+      </Container>
     </Center>
   );
 }
