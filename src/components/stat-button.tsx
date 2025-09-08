@@ -1,7 +1,7 @@
 "use client";
 
 import { PokemonStat } from "pokenode-ts";
-import { useState } from "react";
+import { Button } from "@mantine/core";
 
 function findStatValueByName(statName: string, stats: PokemonStat[]) {
   const stat = stats.find((s) => s.stat.name == statName);
@@ -20,10 +20,20 @@ interface StatButtonProps {
 export default function StatButton(props: StatButtonProps) {
   const { statName, stats, label } = props;
   return (
-    <div>
-      <button onClick={() => findStatValueByName(statName, stats)}>
-        {label}
-      </button>
-    </div>
+    <Button variant="filled" color="indigo">
+      Button
+    </Button>
+    // <div>
+    //   <Button
+    //     variant="filled"
+    //     color="indigo"
+    //     onClick={() => findStatValueByName(statName, stats)}
+    //   >
+    //     {label}
+    //   </Button>
+    //   {/* <PokeButton onClick={() => findStatValueByName(statName, stats)}>
+    //     {label}
+    //   </PokeButton> */}
+    // </div>
   );
 }

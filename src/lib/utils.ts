@@ -1,6 +1,4 @@
 import { PokemonStat, PokemonClient, Pokemon } from "pokenode-ts";
-import Axios from "axios";
-import { setupCache } from "axios-cache-interceptor";
 
 export function findStatValueByName(stat_name: string, stats: PokemonStat[]) {
   const stat = stats.find((s) => s.stat.name == stat_name);
@@ -38,4 +36,18 @@ export async function getSixRandomPokemon() {
   }
 
   return pokemon;
+}
+
+export function initializeScore(): Score {
+  const score: Score = {
+    stats: [
+      { key: "speed", value: 0, pokemon: undefined },
+      { key: "attack", value: 0, pokemon: undefined },
+      { key: "hp", value: 0, pokemon: undefined },
+      { key: "defense", value: 0, pokemon: undefined },
+      { key: "special-attack", value: 0, pokemon: undefined },
+      { key: "special-defense", value: 0, pokemon: undefined },
+    ],
+  };
+  return score;
 }
