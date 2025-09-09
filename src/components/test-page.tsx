@@ -10,6 +10,7 @@ import React from "react";
 import StatOption from "./stat-option";
 import {
   AspectRatio,
+  Box,
   Button,
   Card,
   Center,
@@ -133,83 +134,75 @@ export default function TestPage() {
     } else {
       return (
         <Group justify="flex-start">
-          <Text size="xl">POINTS: {counter}</Text>
-          <Text size="xl">TURN: {pokemonIndex}</Text>
+          <Text size="xs">POINTS: {counter}</Text>
+          <Text size="xs">TURN: {pokemonIndex}</Text>
         </Group>
       );
     }
   };
   return (
-    <Center bg="var(--mantine-color-gray-light)">
-      <Container strategy="grid" size={500}>
-        <Card
-          shadow="sm"
-          padding="lg"
-          radius="md"
-          withBorder
-          style={{ width: "500px" }}
-        >
-          <Card.Section withBorder inheritPadding py="xs">
-            {cardHeader()}
-          </Card.Section>
-          {/* <Flex
-            mih={50}
-            gap="md"
-            justify="center"
-            align="center"
-            direction="row"
-            wrap="wrap"
+    <Center>
+      <Container mt="xs" strategy="grid" size={500}>
+        <Box w={{ base: 400, sm: 400, lg: 500 }} mx="auto">
+          <Card
+            shadow="sm"
+            padding="lg"
+            radius="md"
+            withBorder
+            w={{ sm: 400, lg: 500 }}
+            // style={{ width: "500px" }}
           >
-            <div> */}
-          {currentPokemon && (
-            <>
-              <Text fw={700} size="xl">
-                {capitalize(currentPokemon.name)}
-              </Text>
-              <AspectRatio ratio={1080 / 720} maw={300} mx="auto">
-                <Image
-                  radius="md"
-                  src={currentPokemon.sprites.front_default!}
-                  h={200}
-                  w="auto"
-                  fallbackSrc="https://placehold.co/600x400?text=Placeholder"
-                />
-              </AspectRatio>
-            </>
-          )}
+            <Card.Section withBorder inheritPadding py="xs">
+              {cardHeader()}
+            </Card.Section>
+            {currentPokemon && (
+              <>
+                <Text fw={700} size="xs">
+                  {capitalize(currentPokemon.name)}
+                </Text>
+                <AspectRatio mx="auto">
+                  <Image
+                    radius="md"
+                    src={currentPokemon.sprites.front_default!}
+                    h={200}
+                    w="auto"
+                    fallbackSrc="https://placehold.co/600x400?text=Placeholder"
+                  />
+                </AspectRatio>
+              </>
+            )}
 
-          {currentPokemon && (
-            <>
-              {stats.map((stat) => {
-                return (
-                  <>
-                    <StatOption
-                      key={stat.key}
-                      statKey={stat.key}
-                      statLabel={stat.name}
-                      score={score}
-                      handleStat={handleClick}
-                    />
-                    <Space h="xs" />
-                  </>
-                );
-              })}
-            </>
-          )}
-          {/* </div>
-          </Flex> */}
-          {showRestartButton && (
-            <Button
-              color="blue"
-              fullWidth
-              mt="md"
-              radius="md"
-              onClick={() => restartClicked()}
-            >
-              RESTART
-            </Button>
-          )}
-        </Card>
+            {currentPokemon && (
+              <>
+                {stats.map((stat) => {
+                  return (
+                    <div key={stat.key}>
+                      <StatOption
+                        statKey={stat.key}
+                        statLabel={stat.name}
+                        score={score}
+                        handleStat={handleClick}
+                      />
+                      <Space h="xs" />
+                    </div>
+                  );
+                })}
+              </>
+            )}
+
+            {showRestartButton && (
+              <Button
+                color="blue"
+                fullWidth
+                mt="md"
+                radius="md"
+                onClick={() => restartClicked()}
+              >
+                RESTART
+              </Button>
+            )}
+          </Card>
+        </Box>
       </Container>
     </Center>
   );
