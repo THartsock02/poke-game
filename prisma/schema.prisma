@@ -1,0 +1,20 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model pokemon {
+  Id             Int     @id
+  PokemonName    String  @db.VarChar(20)
+  Hp             Int     @db.SmallInt
+  Attack         Int     @db.SmallInt
+  Defense        Int     @db.SmallInt
+  SpecialAttack  Int     @db.SmallInt
+  SpecialDefense Int     @db.SmallInt
+  Speed          Int     @db.SmallInt
+  ImageUrl       String? @db.VarChar(300)
+}

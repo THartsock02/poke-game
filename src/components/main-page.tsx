@@ -2,7 +2,7 @@
 
 import {
   findStatValueByName,
-  getRandomPokemonId,
+  getRandomPokemon,
   initializeScore,
 } from "@/lib/utils";
 import React from "react";
@@ -22,11 +22,12 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import { PokemonDTO } from "@/lib/PokemonDTO";
 
-export default function TestPage() {
+export default function MainPage() {
   const [counter, setCounter] = React.useState(0);
   const [pokemonIndex, setPokemonIndex] = React.useState(0);
-  const [currentPokemon, setCurrentPokemon] = React.useState<Pokemon>();
+  const [currentPokemon, setCurrentPokemon] = React.useState<PokemonDTO>();
 
   const [score, setScore] = React.useState<Score>(initializeScore());
 
@@ -41,24 +42,11 @@ export default function TestPage() {
     { key: "special-defense", name: "Special Defense" },
   ];
 
-  async function getRandomPokemn() {
-    const id = await getRandomPokemonId();
-    const response = await fetch("https://pokeapi.co/api/v2/pokemon/" + id, {
-      cache: "no-store",
-    });
-
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
-    return (await response.json()) as Pokemon;
-  }
-
-  async function nextPokemn() {
+  async function nextPokemon() {
     setPokemonIndex(pokemonIndex + 1);
 
     if (pokemonIndex < 6) {
-      const pokemon = await getRandomPokemn();
+      const pokemon = await getRandomPokemon();
       if (pokemon) {
         setCurrentPokemon(pokemon);
       }
@@ -68,7 +56,7 @@ export default function TestPage() {
   async function startClicked() {
     setPokemonIndex(1);
     setCounter(0);
-    const pokemon = await getRandomPokemn();
+    const pokemon = await getRandomPokemon();
     if (pokemon) setCurrentPokemon(pokemon);
   }
 
@@ -84,12 +72,18 @@ export default function TestPage() {
     if (currentPokemon) {
       const stats = score.stats;
       const currentStat = stats.find((s) => s.key === statName);
-      const baseStat = findStatValueByName(statName, currentPokemon.stats);
+      // const baseStat = findStatValueByName(statName, currentPokemon.stats);
+
+      let dynamicKey = statName as keyof PokemonDTO;
+
+      let myDynamicPropValue = currentPokemon[dynamicKey];
+      console.log(myDynamicPropValue);
+      const baseStat = currentPokemon;
       if (baseStat && currentStat) {
-        setCounter(counter + baseStat);
-        currentStat.value = baseStat;
-        currentStat.pokemon = currentPokemon.name;
-        nextPokemn();
+        // setCounter(counter + baseStat);
+        // currentStat.value = baseStat;
+        // currentStat.pokemon = currentPokemon.name;
+        nextPokemon();
       }
     }
     checkScore();
@@ -158,9 +152,9 @@ export default function TestPage() {
             {currentPokemon && (
               <>
                 <Text fw={700} size="xs">
-                  {capitalize(currentPokemon.name)}
+                  {capitalize(currentPokemon.pokemonName)}
                 </Text>
-                <AspectRatio mx="auto">
+                {/* <AspectRatio mx="auto">
                   <Image
                     radius="md"
                     src={currentPokemon.sprites.front_default!}
@@ -168,7 +162,7 @@ export default function TestPage() {
                     w="auto"
                     fallbackSrc="https://placehold.co/600x400?text=Placeholder"
                   />
-                </AspectRatio>
+                </AspectRatio> */}
               </>
             )}
 

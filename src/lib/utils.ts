@@ -1,4 +1,6 @@
+// import { PrismaClient } from "@prisma/client";
 import { PokemonStat, PokemonClient, Pokemon } from "pokenode-ts";
+import { PokemonDTO } from "./PokemonDTO";
 
 export function findStatValueByName(stat_name: string, stats: PokemonStat[]) {
   const stat = stats.find((s) => s.stat.name == stat_name);
@@ -6,6 +8,28 @@ export function findStatValueByName(stat_name: string, stats: PokemonStat[]) {
     console.log(stat_name + ": " + stat.base_stat);
     return stat.base_stat;
   }
+}
+
+export async function getRandomPokemon() {
+  const id = await getRandomPokemonId();
+  // const prisma = new PrismaClient();
+
+  // const result = await prisma.pokemon.findMany({
+  //   where: {
+  //     Id: 1,
+  //   },
+  // });
+  // console.log(result[0]);
+
+  const response = await fetch("/api/pokemon/" + id, {
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  return (await response.json()) as PokemonDTO;
 }
 
 export async function getRandomPokemonId() {
