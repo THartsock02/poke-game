@@ -12,7 +12,7 @@ export default async function handler(
 ) {
   const { id } = req.query;
   console.log(id);
-  res.status(200).json({ message: "Hello from Next.js!" });
+  // res.status(200).json({ message: "Hello from Next.js!" });
   if (id && typeof id === "string") {
     const prisma = new PrismaClient();
     const id_number = Number(id);
