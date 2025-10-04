@@ -1,4 +1,3 @@
-// import { PrismaClient } from "@prisma/client";
 import { PokemonStat, PokemonClient, Pokemon } from "pokenode-ts";
 import { PokemonDTO } from "./PokemonDTO";
 
@@ -12,14 +11,6 @@ export function findStatValueByName(stat_name: string, stats: PokemonStat[]) {
 
 export async function getRandomPokemon() {
   const id = await getRandomPokemonId();
-  // const prisma = new PrismaClient();
-
-  // const result = await prisma.pokemon.findMany({
-  //   where: {
-  //     Id: 1,
-  //   },
-  // });
-  // console.log(result[0]);
 
   const response = await fetch("/api/pokemon/" + id, {
     cache: "no-store",
@@ -28,8 +19,9 @@ export async function getRandomPokemon() {
   if (!response.ok) {
     throw new Error(response.statusText);
   }
+  const data = await response.json();
 
-  return (await response.json()) as PokemonDTO;
+  return data as PokemonDTO;
 }
 
 export async function getRandomPokemonId() {
@@ -69,8 +61,8 @@ export function initializeScore(): Score {
       { key: "attack", value: 0, pokemon: undefined },
       { key: "hp", value: 0, pokemon: undefined },
       { key: "defense", value: 0, pokemon: undefined },
-      { key: "special-attack", value: 0, pokemon: undefined },
-      { key: "special-defense", value: 0, pokemon: undefined },
+      { key: "specialAttack", value: 0, pokemon: undefined },
+      { key: "specialDefense", value: 0, pokemon: undefined },
     ],
   };
   return score;

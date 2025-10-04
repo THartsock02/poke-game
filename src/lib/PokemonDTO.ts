@@ -1,4 +1,4 @@
-export type PokemonDTO = {
+export interface PokemonDTO {
   id: number;
   pokemonName: string;
   hp: number;
@@ -7,5 +7,4 @@ export type PokemonDTO = {
   specialAttack: number;
   specialDefense: number;
   speed: number;
-  imageUrl: string | null;
-};
+}

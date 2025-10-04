@@ -3,18 +3,17 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model pokemon {
-  Id             Int     @id
-  PokemonName    String  @db.VarChar(20)
-  Hp             Int     @db.SmallInt
-  Attack         Int     @db.SmallInt
-  Defense        Int     @db.SmallInt
-  SpecialAttack  Int     @db.SmallInt
-  SpecialDefense Int     @db.SmallInt
-  Speed          Int     @db.SmallInt
-  ImageUrl       String? @db.VarChar(300)
+  id             Int    @id
+  pokemonname    String @db.VarChar(20)
+  hp             Int    @db.SmallInt
+  attack         Int    @db.SmallInt
+  defense        Int    @db.SmallInt
+  specialattack  Int    @db.SmallInt
+  specialdefense Int    @db.SmallInt
+  speed          Int    @db.SmallInt
 }

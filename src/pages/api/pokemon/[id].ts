@@ -18,23 +18,20 @@ export default async function handler(
     const id_number = Number(id);
     const result = await prisma.pokemon.findMany({
       where: {
-        Id: id_number,
+        id: id_number,
       },
     });
     const pokemonDb = result[0];
     if (pokemonDb) {
       res.status(200).json({
-        pokemon: {
-          id: pokemonDb.Id,
-          pokemonName: pokemonDb.PokemonName,
-          hp: pokemonDb.Hp,
-          attack: pokemonDb.Hp,
-          defense: pokemonDb.Hp,
-          specialAttack: pokemonDb.Hp,
-          specialDefense: pokemonDb.Hp,
-          speed: pokemonDb.Hp,
-          imageUrl: pokemonDb.ImageUrl,
-        },
+        id: pokemonDb.id,
+        pokemonName: pokemonDb.pokemonname,
+        hp: pokemonDb.hp,
+        attack: pokemonDb.attack,
+        defense: pokemonDb.defense,
+        specialAttack: pokemonDb.specialattack,
+        specialDefense: pokemonDb.specialdefense,
+        speed: pokemonDb.speed,
       });
     }
   }

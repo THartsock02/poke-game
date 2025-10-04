@@ -38,8 +38,8 @@ export default function MainPage() {
     { key: "hp", name: "HP" },
     { key: "attack", name: "Attack" },
     { key: "defense", name: "Defense" },
-    { key: "special-attack", name: "Special Attack" },
-    { key: "special-defense", name: "Special Defense" },
+    { key: "specialAttack", name: "Special Attack" },
+    { key: "specialDefense", name: "Special Defense" },
   ];
 
   async function nextPokemon() {
@@ -57,6 +57,7 @@ export default function MainPage() {
     setPokemonIndex(1);
     setCounter(0);
     const pokemon = await getRandomPokemon();
+    // console.log(pokemon.attack);
     if (pokemon) setCurrentPokemon(pokemon);
   }
 
@@ -69,6 +70,7 @@ export default function MainPage() {
   }
 
   async function handleClick(statName: string) {
+    console.log(statName);
     if (currentPokemon) {
       const stats = score.stats;
       const currentStat = stats.find((s) => s.key === statName);
@@ -78,11 +80,11 @@ export default function MainPage() {
 
       let myDynamicPropValue = currentPokemon[dynamicKey];
       console.log(myDynamicPropValue);
-      const baseStat = currentPokemon;
-      if (baseStat && currentStat) {
-        // setCounter(counter + baseStat);
-        // currentStat.value = baseStat;
-        // currentStat.pokemon = currentPokemon.name;
+      const baseStat = myDynamicPropValue;
+      if (baseStat && typeof baseStat === "number" && currentStat) {
+        setCounter(counter + baseStat);
+        currentStat.value = baseStat;
+        currentStat.pokemon = currentPokemon.pokemonName;
         nextPokemon();
       }
     }
@@ -154,15 +156,15 @@ export default function MainPage() {
                 <Text fw={700} size="xs">
                   {capitalize(currentPokemon.pokemonName)}
                 </Text>
-                {/* <AspectRatio mx="auto">
+                <AspectRatio mx="auto">
                   <Image
                     radius="md"
-                    src={currentPokemon.sprites.front_default!}
+                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${currentPokemon.id}.png`}
                     h={200}
                     w="auto"
                     fallbackSrc="https://placehold.co/600x400?text=Placeholder"
                   />
-                </AspectRatio> */}
+                </AspectRatio>
               </>
             )}
 
