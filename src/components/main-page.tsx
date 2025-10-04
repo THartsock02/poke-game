@@ -43,9 +43,8 @@ export default function MainPage() {
   ];
 
   async function nextPokemon() {
-    setPokemonIndex(pokemonIndex + 1);
-
     if (pokemonIndex < 6) {
+      setPokemonIndex(pokemonIndex + 1);
       const pokemon = await getRandomPokemon();
       if (pokemon) {
         setCurrentPokemon(pokemon);
