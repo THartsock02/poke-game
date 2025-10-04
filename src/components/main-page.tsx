@@ -34,12 +34,12 @@ export default function MainPage() {
   const [showRestartButton, setShowRestartButton] = React.useState(false);
 
   const stats: Stat[] = [
-    { key: "speed", name: "Speed" },
-    { key: "hp", name: "HP" },
-    { key: "attack", name: "Attack" },
-    { key: "defense", name: "Defense" },
-    { key: "specialAttack", name: "Special Attack" },
-    { key: "specialDefense", name: "Special Defense" },
+    { id: 1, key: "hp", name: "HP" },
+    { id: 2, key: "attack", name: "Attack" },
+    { id: 3, key: "defense", name: "Defense" },
+    { id: 4, key: "specialAttack", name: "Sp. Attack" },
+    { id: 5, key: "specialDefense", name: "Sp. Defense" },
+    { id: 6, key: "speed", name: "Speed" },
   ];
 
   async function nextPokemon() {
