@@ -6,4 +6,5 @@ interface StatScore {
 
 interface Score {
   stats: StatScore[];
+  bonus: number;
 }

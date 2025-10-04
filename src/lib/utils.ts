@@ -56,6 +56,7 @@ export async function getSixRandomPokemon() {
 
 export function initializeScore(): Score {
   const score: Score = {
+    bonus: 0,
     stats: [
       { key: "speed", value: 0, pokemon: undefined },
       { key: "attack", value: 0, pokemon: undefined },

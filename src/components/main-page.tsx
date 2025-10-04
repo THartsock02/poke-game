@@ -1,10 +1,7 @@
 "use client";
 
-import {
-  findStatValueByName,
-  getRandomPokemon,
-  initializeScore,
-} from "@/lib/utils";
+import { useDisclosure } from "@mantine/hooks";
+import { getRandomPokemon, initializeScore } from "@/lib/utils";
 import React from "react";
 
 import StatOption from "./stat-option";
@@ -15,19 +12,23 @@ import {
   Card,
   Center,
   Container,
-  Flex,
+  Modal,
   Group,
   Image,
   Space,
   Text,
-  Title,
+  TextInput,
 } from "@mantine/core";
 import { PokemonDTO } from "@/lib/PokemonDTO";
+import { useForm } from "@mantine/form";
 
 export default function MainPage() {
   const [counter, setCounter] = React.useState(0);
   const [pokemonIndex, setPokemonIndex] = React.useState(0);
   const [currentPokemon, setCurrentPokemon] = React.useState<PokemonDTO>();
+  const [currentStatGuess, setCurrentStatGuess] = React.useState("");
+
+  const [opened, { open, close }] = useDisclosure(false);
 
   const [score, setScore] = React.useState<Score>(initializeScore());
 
@@ -42,6 +43,13 @@ export default function MainPage() {
     { id: 6, key: "speed", name: "Speed" },
   ];
 
+  const form = useForm({
+    mode: "uncontrolled",
+    initialValues: {
+      guess: "",
+    },
+  });
+
   async function nextPokemon() {
     if (pokemonIndex < 6) {
       setPokemonIndex(pokemonIndex + 1);
@@ -55,6 +63,7 @@ export default function MainPage() {
   async function startClicked() {
     setPokemonIndex(1);
     setCounter(0);
+    // setScore()
     const pokemon = await getRandomPokemon();
     // console.log(pokemon.attack);
     if (pokemon) setCurrentPokemon(pokemon);
@@ -68,7 +77,13 @@ export default function MainPage() {
     resetScore();
   }
 
-  async function handleClick(statName: string) {
+  async function handleGuess(guess: string) {
+    close();
+    form.setValues({
+      guess: "0",
+    });
+    const statName = currentStatGuess;
+
     console.log(statName);
     if (currentPokemon) {
       const stats = score.stats;
@@ -81,6 +96,9 @@ export default function MainPage() {
       console.log(myDynamicPropValue);
       const baseStat = myDynamicPropValue;
       if (baseStat && typeof baseStat === "number" && currentStat) {
+        if (baseStat == +guess) {
+          score.bonus += 5;
+        }
         setCounter(counter + baseStat);
         currentStat.value = baseStat;
         currentStat.pokemon = currentPokemon.pokemonName;
@@ -90,7 +108,13 @@ export default function MainPage() {
     checkScore();
   }
 
+  async function handleClick(statName: string) {
+    setCurrentStatGuess(statName);
+    open();
+  }
+
   function resetScore() {
+    score.bonus = 0;
     score.stats.forEach((s) => {
       s.pokemon = undefined;
       s.value = 0;
@@ -130,6 +154,8 @@ export default function MainPage() {
       return (
         <Group justify="flex-start">
           <Text size="xs">POINTS: {counter}</Text>
+          <Text size="xs">BONUS: {score.bonus}</Text>
+          <Text size="xs">TOTAL: {score.bonus + counter}</Text>
           <Text size="xs">TURN: {pokemonIndex}</Text>
         </Group>
       );
@@ -199,6 +225,32 @@ export default function MainPage() {
           </Card>
         </Box>
       </Container>
+      <Modal
+        opened={opened}
+        onClose={close}
+        withCloseButton={false}
+        title="Guess Stat"
+        centered
+        closeOnClickOutside={false}
+        closeOnEscape={false}
+        overlayProps={{
+          backgroundOpacity: 0.55,
+          blur: 3,
+        }}
+      >
+        <form onSubmit={form.onSubmit((values) => handleGuess(values.guess))}>
+          <TextInput
+            withAsterisk
+            label="Guess"
+            placeholder=""
+            key={form.key("guess")}
+            {...form.getInputProps("guess")}
+          />
+          <Group justify="flex-end" mt="md">
+            <Button type="submit">Submit</Button>
+          </Group>
+        </form>
+      </Modal>
     </Center>
   );
 }
