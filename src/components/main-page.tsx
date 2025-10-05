@@ -2,7 +2,7 @@
 
 import { useDisclosure } from "@mantine/hooks";
 import { getRandomPokemon, initializeScore } from "@/lib/utils";
-import React from "react";
+import React, { useState } from "react";
 
 import StatOption from "./stat-option";
 import {
@@ -23,16 +23,17 @@ import { PokemonDTO } from "@/lib/PokemonDTO";
 import { useForm } from "@mantine/form";
 
 export default function MainPage() {
-  const [counter, setCounter] = React.useState(0);
-  const [pokemonIndex, setPokemonIndex] = React.useState(0);
-  const [currentPokemon, setCurrentPokemon] = React.useState<PokemonDTO>();
-  const [currentStatGuess, setCurrentStatGuess] = React.useState("");
+  const [counter, setCounter] = useState(0);
+  const [pokemonIndex, setPokemonIndex] = useState(0);
+  const [currentPokemon, setCurrentPokemon] = useState<PokemonDTO>();
+  const [currentStatGuess, setCurrentStatGuess] = useState("");
 
   const [opened, { open, close }] = useDisclosure(false);
+  const [finalScoreOpened, setFinalScoreOpened] = useState(false);
 
-  const [score, setScore] = React.useState<Score>(initializeScore());
+  const [score, setScore] = useState<Score>(initializeScore());
 
-  const [showRestartButton, setShowRestartButton] = React.useState(false);
+  const [showRestartButton, setShowRestartButton] = useState(false);
 
   const stats: Stat[] = [
     { id: 1, key: "hp", name: "HP" },
@@ -57,6 +58,8 @@ export default function MainPage() {
       if (pokemon) {
         setCurrentPokemon(pokemon);
       }
+    } else {
+      setFinalScoreOpened(true);
     }
   }
 
@@ -80,7 +83,7 @@ export default function MainPage() {
   async function handleGuess(guess: string) {
     close();
     form.setValues({
-      guess: "0",
+      guess: undefined,
     });
     const statName = currentStatGuess;
 
@@ -240,6 +243,44 @@ export default function MainPage() {
       >
         <form onSubmit={form.onSubmit((values) => handleGuess(values.guess))}>
           <TextInput
+            data-autofocus
+            withAsterisk
+            label="Guess"
+            placeholder=""
+            key={form.key("guess")}
+            {...form.getInputProps("guess")}
+          />
+          <Group justify="flex-end" mt="md">
+            <Button type="submit" fullWidth>
+              Submit
+            </Button>
+          </Group>
+        </form>
+      </Modal>
+
+      <Modal
+        opened={finalScoreOpened}
+        onClose={close}
+        withCloseButton={false}
+        title="Game Over"
+        centered
+        overlayProps={{
+          backgroundOpacity: 0.55,
+          blur: 3,
+        }}
+      >
+        <Text size="xs">Final Score: {score.bonus + counter}</Text>
+        <Button
+          color="blue"
+          fullWidth
+          mt="md"
+          radius="md"
+          onClick={() => restartClicked()}
+        >
+          RESTART
+        </Button>
+        {/* <form onSubmit={form.onSubmit((values) => handleGuess(values.guess))}>
+          <TextInput
             withAsterisk
             label="Guess"
             placeholder=""
@@ -249,7 +290,7 @@ export default function MainPage() {
           <Group justify="flex-end" mt="md">
             <Button type="submit">Submit</Button>
           </Group>
-        </form>
+        </form> */}
       </Modal>
     </Center>
   );
