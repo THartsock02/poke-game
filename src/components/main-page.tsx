@@ -73,6 +73,7 @@ export default function MainPage() {
   }
 
   async function restartClicked() {
+    setFinalScoreOpened(false);
     setShowRestartButton(false);
     setPokemonIndex(0);
     setCounter(0);
@@ -231,11 +232,8 @@ export default function MainPage() {
       <Modal
         opened={opened}
         onClose={close}
-        withCloseButton={false}
         title="Guess Stat"
         centered
-        closeOnClickOutside={false}
-        closeOnEscape={false}
         overlayProps={{
           backgroundOpacity: 0.55,
           blur: 3,
@@ -260,8 +258,7 @@ export default function MainPage() {
 
       <Modal
         opened={finalScoreOpened}
-        onClose={close}
-        withCloseButton={false}
+        onClose={() => setFinalScoreOpened(false)}
         title="Game Over"
         centered
         overlayProps={{
