@@ -25,7 +25,7 @@ export async function getRandomPokemon() {
 }
 
 export async function getRandomPokemonId() {
-  return (await Math.floor(Math.random() * 492)) + 1;
+  return (await Math.floor(Math.random() * 988)) + 1;
 }
 
 export async function getSixRandomPokemon() {
