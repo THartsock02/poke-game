@@ -182,7 +182,7 @@ export default function MainPage() {
             </Card.Section>
             {currentPokemon && (
               <>
-                <Text fw={700} size="xs">
+                <Text fw={700} size="xs" ta="center">
                   {capitalize(currentPokemon.pokemonName)}
                 </Text>
                 <AspectRatio mx="auto">
