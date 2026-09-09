@@ -167,7 +167,7 @@ export default function MainPage() {
   };
   return (
     <Center>
-      <Container mt="xs" strategy="grid" size={500}>
+      <Container mt="xl" strategy="grid" size={500}>
         <Box w={{ base: 400, sm: 400, lg: 500 }} mx="auto">
           <Card
             shadow="sm"
@@ -182,7 +182,7 @@ export default function MainPage() {
             </Card.Section>
             {currentPokemon && (
               <>
-                <Text fw={700} size="xs" ta="center">
+                <Text fw={700} mt="sm" size="xl" ta="center">
                   {capitalize(currentPokemon.pokemonName)}
                 </Text>
                 <AspectRatio mx="auto">
