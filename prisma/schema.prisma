@@ -3,17 +3,26 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model pokemon {
-  id             Int    @id
-  pokemonname    String @db.VarChar(20)
-  hp             Int    @db.SmallInt
-  attack         Int    @db.SmallInt
-  defense        Int    @db.SmallInt
-  specialattack  Int    @db.SmallInt
-  specialdefense Int    @db.SmallInt
-  speed          Int    @db.SmallInt
+  id             Int    @id @default(autoincrement())
+  pokemonname    String @db.VarChar
+  hp             String @db.VarChar
+  attack         String @db.VarChar
+  defense        String @db.VarChar
+  specialattack  String @db.VarChar
+  specialdefense String @db.VarChar
+  speed          String @db.VarChar
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model generations {
+  id       Int    @id @default(autoincrement())
+  name     String
+  start_id Int
+  end_id   Int
 }

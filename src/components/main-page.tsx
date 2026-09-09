@@ -1,9 +1,9 @@
 "use client";
 
+import generations from "../../generations.json";
 import { useDisclosure } from "@mantine/hooks";
 import { getRandomPokemon, initializeScore } from "@/lib/utils";
 import React, { useState } from "react";
-
 import StatOption from "./stat-option";
 import {
   AspectRatio,
@@ -15,6 +15,7 @@ import {
   Modal,
   Group,
   Image,
+  RangeSlider,
   Space,
   Text,
   TextInput,
@@ -35,6 +36,11 @@ export default function MainPage() {
 
   const [showRestartButton, setShowRestartButton] = useState(false);
 
+  const [generation, setGeneration] = useState<[number, number]>([1, 9]);
+
+  const [startId, setStartId] = useState(0);
+  const [endId, setEndId] = useState(0);
+
   const stats: Stat[] = [
     { id: 1, key: "hp", name: "HP" },
     { id: 2, key: "attack", name: "Attack" },
@@ -52,9 +58,12 @@ export default function MainPage() {
   });
 
   async function nextPokemon() {
+    console.log("pokemonIndex: " + pokemonIndex);
     if (pokemonIndex < 6) {
       setPokemonIndex(pokemonIndex + 1);
-      const pokemon = await getRandomPokemon();
+      console.log("startId: " + startId);
+      console.log("endId: " + endId);
+      const pokemon = await getRandomPokemon(startId, endId);
       if (pokemon) {
         setCurrentPokemon(pokemon);
       }
@@ -64,11 +73,20 @@ export default function MainPage() {
   }
 
   async function startClicked() {
+    const start_id = generations[generation[0] - 1].start_id;
+    const end_id = generations[generation[1] - 1].end_id;
+
+    console.log("start_id: " + start_id);
+    console.log("end_id: " + end_id);
+
+    setStartId(start_id);
+    setEndId(end_id);
+
     setPokemonIndex(1);
     setCounter(0);
-    // setScore()
-    const pokemon = await getRandomPokemon();
-    // console.log(pokemon.attack);
+
+    const pokemon = await getRandomPokemon(start_id, end_id);
+
     if (pokemon) setCurrentPokemon(pokemon);
   }
 
@@ -90,6 +108,7 @@ export default function MainPage() {
 
     console.log(statName);
     if (currentPokemon) {
+      console.log(currentPokemon);
       const stats = score.stats;
       const currentStat = stats.find((s) => s.key === statName);
       // const baseStat = findStatValueByName(statName, currentPokemon.stats);
@@ -98,8 +117,15 @@ export default function MainPage() {
 
       let myDynamicPropValue = currentPokemon[dynamicKey];
       console.log(myDynamicPropValue);
-      const baseStat = myDynamicPropValue;
+      let baseStat = myDynamicPropValue;
+      console.log("baseStat: " + baseStat);
+      console.log("currentStat: " + JSON.stringify(currentStat));
+      console.log(typeof baseStat);
+      if (baseStat && typeof baseStat === "string") {
+        baseStat = parseInt(baseStat, 10);
+      }
       if (baseStat && typeof baseStat === "number" && currentStat) {
+        console.log("inside");
         if (baseStat == +guess) {
           score.bonus += 5;
         }
@@ -139,20 +165,44 @@ export default function MainPage() {
     return s && String(s[0]).toUpperCase() + String(s).slice(1);
   }
 
+  const marks = [
+    { value: 1 },
+    { value: 2 },
+    { value: 3 },
+    { value: 4 },
+    { value: 5 },
+    { value: 6 },
+    { value: 7 },
+    { value: 8 },
+    { value: 9 },
+  ];
   const cardHeader = () => {
     if (pokemonIndex == 0) {
       return (
-        <Group>
-          <Button
-            color="blue"
-            fullWidth
-            mt="md"
-            radius="md"
-            onClick={() => startClicked()}
-          >
-            START
-          </Button>
-        </Group>
+        <>
+          <RangeSlider
+            labelAlwaysOn
+            value={generation}
+            onChange={setGeneration}
+            minRange={1}
+            min={1}
+            max={9}
+            marks={marks}
+            mt={32}
+            mb={32}
+          />
+          <Group>
+            <Button
+              color="blue"
+              fullWidth
+              mt="md"
+              radius="md"
+              onClick={() => startClicked()}
+            >
+              START
+            </Button>
+          </Group>
+        </>
       );
     } else {
       return (
@@ -175,7 +225,6 @@ export default function MainPage() {
             radius="md"
             withBorder
             w={{ sm: 400, lg: 500 }}
-            // style={{ width: "500px" }}
           >
             <Card.Section withBorder inheritPadding py="xs">
               {cardHeader()}
@@ -183,7 +232,8 @@ export default function MainPage() {
             {currentPokemon && (
               <>
                 <Text fw={700} mt="sm" size="xl" ta="center">
-                  {capitalize(currentPokemon.pokemonName)}
+                  {capitalize(currentPokemon.pokemonName)} (#{currentPokemon.id}
+                  )
                 </Text>
                 <AspectRatio mx="auto">
                   <Image

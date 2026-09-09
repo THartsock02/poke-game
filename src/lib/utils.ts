@@ -9,8 +9,11 @@ export function findStatValueByName(stat_name: string, stats: PokemonStat[]) {
   }
 }
 
-export async function getRandomPokemon() {
-  const id = await getRandomPokemonId();
+export async function getRandomPokemon(
+  start_id: number,
+  end_id: number,
+): Promise<PokemonDTO | undefined> {
+  const id = await getRandomPokemonId(start_id, end_id);
 
   const response = await fetch("/api/pokemon/" + id, {
     cache: "no-store",
@@ -24,38 +27,13 @@ export async function getRandomPokemon() {
   return data as PokemonDTO;
 }
 
-export async function getRandomPokemonId() {
-  return (await Math.floor(Math.random() * 988)) + 1;
-}
-
-export async function getSixRandomPokemon() {
-  const api = new PokemonClient({
-    cacheOptions: {
-      ttl: 60,
-      interpretHeader: true,
-      etag: true,
-      cacheTakeover: true,
-    },
-    logs: true,
-  });
-
-  const pokemon: Pokemon[] = [];
-
-  for (let i = 0; i < 6; i++) {
-    const randomPokemanId = await getRandomPokemonId();
-    if (pokemon.some((p) => p.id === randomPokemanId)) {
-      i--; // Retry with a new ID
-      continue;
-    }
-    // console.log("random id: " + randomPokemanId);
-    const randomPokemon = await api
-      .getPokemonById(randomPokemanId)
-      .catch(() => console.log("Oops!"));
-    if (randomPokemon && randomPokemon != undefined)
-      pokemon.push(randomPokemon);
-  }
-
-  return pokemon;
+export async function getRandomPokemonId(min: number, max: number) {
+  console.log("min: " + min);
+  console.log("max: " + max);
+  const id = Math.floor(Math.random() * (max - min + 1)) + min;
+  console.log("random id: " + id);
+  return id;
+  // return (await Math.floor(Math.random() * 988)) + 1;
 }
 
 export function initializeScore(): Score {

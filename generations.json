@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "name": "Kanto",
+        "start_id": 1,
+        "end_id": 151
+    },
+    {
+        "id": 2,
+        "name": "Johto",
+        "start_id": 152,
+        "end_id": 251
+    },
+    {
+        "id": 3,
+        "name": "Hoenn",
+        "start_id": 252,
+        "end_id": 386
+    },
+    {
+        "id": 4,
+        "name": "Sinnoh",
+        "start_id": 387,
+        "end_id": 493
+    },
+    {
+        "id": 5,
+        "name": "Unova",
+        "start_id": 494,
+        "end_id": 649
+    },
+    {
+        "id": 6,
+        "name": "Kalos",
+        "start_id": 650,
+        "end_id": 721
+    },
+    {
+        "id": 7,
+        "name": "Alola",
+        "start_id": 722,
+        "end_id": 809
+    },
+    {
+        "id": 8,
+        "name": "Galar",
+        "start_id": 810,
+        "end_id": 905
+    },
+    {
+        "id": 9,
+        "name": "Paldea",
+        "start_id": 906,
+        "end_id": 1025
+    }
+]
